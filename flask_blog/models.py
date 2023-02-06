@@ -1,6 +1,9 @@
-from flask_blog import db
+from flask_blog import db, login_manager
 from datetime import datetime
 
+@login_manager.user_laoder
+def load_user(user_id):
+    return Users.query.get(int(user_id))
 
 #Create Model
 class Users(db.Model):
@@ -13,7 +16,7 @@ class Users(db.Model):
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"User.('{self.username}', '{{self.email}}' , '{self.image_file}')"
+        return f"User('{self.username}', '{self.email}' , '{self.image_file}')"
 
 
 class Post(db.Model):
